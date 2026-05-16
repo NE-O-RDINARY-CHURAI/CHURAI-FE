@@ -39,6 +39,7 @@ export interface PostDetailResponse {
   createdAt: string;
   contents?: string;
   imageUrls?: string[];
+  comments?: { id: number; nickname: string; contents: string; parentId: number | null; createdAt: string }[];
 }
 
 export interface CreateCommentRequest {
