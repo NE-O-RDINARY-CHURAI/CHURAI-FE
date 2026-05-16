@@ -1,132 +1,149 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import PostCard from '../../components/card/ListCard'
-import { searchPosts, type Post } from '../../apis/search/search'
+import { searchPosts } from '../../apis/search/search.api'
+import type { Post } from '../../apis/search/search.types'
 import SearchIcon from '../../assets/icons/search.svg?react'
 import BackIcon from '../../assets/icons/back.svg?react'
 
+const CHUNK = 10
+
 export default function SearchPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const fromBoard = location.state?.fromBoard === true
+
   const [keyword, setKeyword] = useState('')
-  const [posts, setPosts] = useState<Post[]>([])
-  const [searched, setSearched] = useState(false) // 검색 실행 여부 (결과 없음 메시지 조건)
-  const [page, setPage] = useState(0)
-  const [hasNext, setHasNext] = useState(false) // 다음 페이지 존재 여부
+  const [searched, setSearched] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const currentKeyword = useRef('') // 무한스크롤 시 현재 검색어 유지용
+  const [hovered, setHovered] = useState(false)
 
-  // reset=true면 새 검색, false면 다음 페이지 이어붙이기
-  const fetchPosts = useCallback(async (kw: string, pageNum: number, reset: boolean) => {
+  const isBoxActive = hovered || keyword.length > 0
+  const activeBorder = fromBoard ? 'border-main' : 'border-gray4'
+  const boxBorder = isBoxActive ? activeBorder : 'border-gray2'
+
+  const [allData, setAllData] = useState<Post[]>([])
+  const allDataRef = useRef<Post[]>([])
+  const [displayCount, setDisplayCount] = useState(CHUNK)
+
+  const observerRef = useRef<IntersectionObserver | null>(null)
+
+  const handleSearch = async () => {
+    const trimmed = keyword.trim()
+    if (!trimmed) return
+    setSearched(true)
     setLoading(true)
     setError(false)
     try {
-      const data = await searchPosts(kw, pageNum)
-      setPosts(prev => (reset ? data.content : [...prev, ...data.content]))
-      setHasNext(data.hasNext)
-      setPage(pageNum)
+      const data = await searchPosts(trimmed)
+      allDataRef.current = data.content
+      setAllData(data.content)
+      setDisplayCount(CHUNK)
     } catch (e) {
       console.error(e)
       setError(true)
     } finally {
       setLoading(false)
     }
-  }, [])
-
-  const handleSearch = () => {
-    const trimmed = keyword.trim()
-    if (!trimmed) return
-    currentKeyword.current = trimmed
-    setSearched(true)
-    fetchPosts(trimmed, 0, true)
   }
 
-  // 마지막 카드가 화면에 보이면 다음 페이지 자동 로드 (무한스크롤)
-  const lastCardRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (observerRef.current) observerRef.current.disconnect()
-      observerRef.current = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && hasNext && !loading) {
-          fetchPosts(currentKeyword.current, page + 1, false)
-        }
-      })
-      if (node) observerRef.current.observe(node)
-    },
-    [hasNext, loading, page, fetchPosts],
-  )
-
-  // 페이지 언마운트 시 옵저버 정리
-  useEffect(() => {
-    return () => observerRef.current?.disconnect()
+  const lastCardRef = useCallback((node: HTMLElement | null) => {
+    if (observerRef.current) observerRef.current.disconnect()
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setDisplayCount(prev => Math.min(prev + CHUNK, allDataRef.current.length))
+      }
+    })
+    if (node) observerRef.current.observe(node)
   }, [])
 
-  return (
-    <div className="flex min-h-dvh flex-col">
-      <header className="relative flex h-14 shrink-0 items-center justify-center bg-gray3 px-7">
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="absolute left-7 flex h-6 w-6 shrink-0 items-center justify-center"
-          aria-label="뒤로가기"
-        >
-          <BackIcon className="h-6 w-6 text-white" />
-        </button>
-        <h1 className="text-base font-medium text-white">검색하기</h1>
-      </header>
+  useEffect(() => () => observerRef.current?.disconnect(), [])
 
-      <main className="flex-1 px-4 py-3">
-        <div className="mb-3 flex h-10 items-center gap-1 rounded-medium4 border border-gray2 bg-white px-3">
+  const visiblePosts = allData.slice(0, displayCount)
+  const hasMore = displayCount < allData.length
+
+  return (
+    <div className="flex min-h-dvh flex-col bg-white">
+      {fromBoard ? (
+        <header className="relative flex h-14 shrink-0 items-center justify-center bg-main px-7">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="absolute left-7 flex h-6 w-6 shrink-0 items-center justify-center"
+            aria-label="뒤로가기"
+          >
+            <BackIcon className="h-6 w-6 text-white" />
+          </button>
+          <h1 className="text-base font-medium text-white">츄라이 랭킹</h1>
+        </header>
+      ) : (
+        <header className="relative flex h-14 shrink-0 items-center justify-center bg-gray3 px-7">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="absolute left-7 flex h-6 w-6 shrink-0 items-center justify-center"
+            aria-label="뒤로가기"
+          >
+            <BackIcon className="h-6 w-6 text-white" />
+          </button>
+          <h1 className="text-base font-medium text-white">검색하기</h1>
+        </header>
+      )}
+
+      <main className="flex-1 px-4 pb-3 pt-6">
+        <div
+          className={`mb-4 flex h-10 items-center gap-1 rounded-medium4 border bg-white px-3 transition-colors duration-150 ${boxBorder}`}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <input
             type="search"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
-            placeholder="자유롭게 검색해보세요"
-            className="caption1-medium flex-1 bg-transparent text-black outline-none placeholder:text-gray2"
+            placeholder="자유롭게 검색해보세요!"
+            className="caption1-medium min-w-0 flex-1 bg-transparent text-black outline-none placeholder:text-gray2"
             autoFocus
           />
-          {/* 주황 돋보기 = 검색 실행 버튼 */}
           <button
             type="button"
             onClick={handleSearch}
             className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-main"
             aria-label="검색"
           >
-        <SearchIcon
-          className="hover:text-gray2 cursor-pointer text-main"
-        />
+            <SearchIcon className="h-5 w-5 text-main" />
           </button>
         </div>
 
         {error && (
           <p className="caption1-medium mt-10 text-center text-gray3">오류가 발생했습니다. 다시 시도해주세요.</p>
         )}
-        {searched && posts.length === 0 && !loading && !error && (
+        {searched && allData.length === 0 && !loading && !error && (
           <p className="caption1-medium mt-10 text-center text-gray3">검색 결과가 없습니다</p>
         )}
-        <div className="flex flex-col gap-2">
-          {posts.map((post, i) => (
-            // 마지막 카드에만 ref 부착해서 무한스크롤 감지
-            <div
-              key={post.postId}
-              ref={i === posts.length - 1 ? lastCardRef : null}
-            >
-              <PostCard
-                imageUrl={post.thumbnailUrl}
-                category={post.category}
-                nickname={post.nickname}
-                title={post.title}
-                commentCount={post.commentCount}
-                likeCount={post.chuRaiCount}
-                viewCount={post.heungMiCount}
-                onClick={() => navigate(`/boardDetail/${post.postId}`)}
-              />
-            </div>
-          ))}
+
+        <div className={`flex flex-col gap-2 transition-opacity duration-200 ${loading ? 'pointer-events-none opacity-40' : 'opacity-100'}`}>
+          {visiblePosts.map((post, i) => {
+            const isLast = i === visiblePosts.length - 1
+            return (
+              <div key={post.postId} ref={isLast ? lastCardRef : null}>
+                <PostCard
+                  imageUrl={post.thumbnailUrl}
+                  category={post.category}
+                  nickname={post.nickname}
+                  title={post.title}
+                  chuRaiCount={post.chuRaiCount}
+                  heungMiCount={post.heungMiCount}
+                  onClick={() => navigate(`/boardDetail/${post.postId}`)}
+                />
+              </div>
+            )
+          })}
         </div>
-        {loading && (
-          <p className="caption1-medium mt-4 text-center text-gray3">불러오는 중...</p>
+
+        {!loading && hasMore && (
+          <p className="caption1-medium mt-4 text-center text-gray3">스크롤하면 더 불러옵니다</p>
         )}
       </main>
     </div>
