@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { getPostDetail } from '../../apis/board/boardApi';
 import type { PostDetailResponse } from '../../apis/board/boardApi';
 
-import BowlIcon from '../../assets/icons/boul.svg';
-import SnackIcon from '../../assets/icons/snacks.svg';
 
 export default function BoardDetailPage() {
   const { id } = useParams<{ id: string }>();
