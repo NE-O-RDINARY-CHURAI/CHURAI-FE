@@ -155,7 +155,7 @@ export default function HomePage() {
         </div>
         <div className="mt-2 flex flex-col gap-2">
           {RECIPE_LIST_MOCK.map((item, index) => (
-            <ListCard key={index} {...item} />
+            <ListCard key={index} {...item} onClick={() => navigate(`/boardDetail/${item.id}`)} />
           ))}
         </div>
         <div className="mt-3 flex justify-center">
