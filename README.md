@@ -10,7 +10,7 @@
 
 ## 🙋🏻‍♀️ CHURAI의 FE Developer를 소개합니다!
 
-| <a href="https://github.com/p1001q"><img src="https://avatars.githubusercontent.com/u/201849046?v=4" width="120px;" alt=""/></a> | <a href="https://github.com/kinjaebeom"><img src="https://avatars.githubusercontent.com/u/103941165?v=4" width="120px;" alt=""/></a> | <a href="https://github.com/nue-os"><img src="https://avatars.githubusercontent.com/u/128093404?v=4" width="120px;" alt=""/></a> |
+| <a href="https://github.com/p1001q"><img src="https://github.com/p1001q.png" width="120px;" alt="클랩"/></a> | <a href="https://github.com/kinjaebeom"><img src="https://github.com/kinjaebeom.png" width="120px;" alt="꿀범"/></a> | <a href="https://github.com/nue-os"><img src="https://github.com/nue-os.png" width="120px;" alt="밤비"/></a> |
 | --- | --- | --- |
 | 클랩<br/>박수연 | 꿀범<br/>김재범 | 밤비<br/>김소은 |
 
@@ -89,12 +89,10 @@ CHURAI는 사람들이 자신만의 음식 취향을 자유롭게 공유하고,
 ## ✅ 규칙
 
 ```bash
-{type}/{scope}-{short-description}
+{type}/{short-description}
 ```
 
 - `type`은 소문자 사용
-- `scope`는 가능한 짧게 작성
-  - ex) web, admin, api, auth
 - `short-description`은 kebab-case 사용
 - 한글 브랜치명 사용 금지
 - 의미 없는 약어 남발 금지
