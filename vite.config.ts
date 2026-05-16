@@ -5,4 +5,14 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://churai.kro.kr',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''), 
+      },
+    },
+  },
 });
