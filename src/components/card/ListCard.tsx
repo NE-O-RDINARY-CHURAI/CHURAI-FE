@@ -10,8 +10,8 @@ interface PostCardProps {
   category: string
   nickname: string
   title: string
-  chuRaiCount: number
-  heungMiCount: number
+  chuRaiCount?: number
+  heungMiCount?: number
   rank?: number
   onClick?: () => void
 }
@@ -23,8 +23,8 @@ const PostCard = ({
   category,
   nickname,
   title,
-  chuRaiCount,
-  heungMiCount,
+  chuRaiCount = 0,
+  heungMiCount = 0,
   rank,
   onClick,
 }: PostCardProps) => {
