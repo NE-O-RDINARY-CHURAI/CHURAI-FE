@@ -1,4 +1,5 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { usePostActions } from '../../hooks/usePostActions';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPostDetail } from '../../apis/board/boardApi';
 import type { PostDetailResponse } from '../../apis/board/boardApi';
@@ -7,23 +8,19 @@ import Button from '../../components/button/Button';
 import Tag from '../../components/tag/Tag';
 import SquareCard from '../../components/card/SquareCard';
 
-import GoodIcon from '../../assets/icons/GoodIcon';
-import EyeIcon from '../../assets/icons/EyeIcon';
-import ForkIcon from '../../assets/icons/ForkIcon';
+import GoodIcon from '../../assets/icons/good.svg?react';
+import EyeIcon from '../../assets/icons/eye.svg?react';
+import ForkIcon from '../../assets/icons/fork.svg?react';
 
 export default function BoardDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  // 상태 관리 세팅
   const [boardData, setBoardData] = useState<PostDetailResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLiked, setIsLiked] = useState(false);
-  
-  // 백엔드가 주는 진짜 '흥미요/츄라이' 카운트가 연동되기 전까지 바인딩할 클라이언트 상태
-  const [likeCount, setLikeCount] = useState(0); 
 
-  // 컴포넌트 렌더링 시 실시간 데이터 호출
+  const { churaid, toggleChurai, interested, toggleInterested } = usePostActions(Number(id));
+
   useEffect(() => {
     if (!id) return;
 
@@ -32,8 +29,6 @@ export default function BoardDetail() {
         setIsLoading(true);
         const data = await getPostDetail(id);
         setBoardData(data);
-        // 백엔드에서 내려주는 진짜 chuRaiCount(또는 heungMiCount)를 초기 좋아요 수로 세팅
-        setLikeCount(data.churaiCount || 0);
       } catch (error) {
         console.error('게시글 상세 조회 실패:', error);
         alert('존재하지 않거나 삭제된 레시피 게시글입니다.');
@@ -45,16 +40,6 @@ export default function BoardDetail() {
 
     fetchPostDetail();
   }, [id, navigate]);
-
-  // '인정해요' 버튼 클릭 핸들러
-  const handleLikeToggle = () => {
-    if (isLiked) {
-      setLikeCount(prev => prev - 1);
-    } else {
-      setLikeCount(prev => prev + 1);
-    }
-    setIsLiked(!isLiked);
-  };
 
   // 로딩 인디케이터 가드
   if (isLoading) {
@@ -130,16 +115,27 @@ export default function BoardDetail() {
         {/* ④ 하단 컨트롤 버튼 군 */}
         <section className="mt-12 pt-6 border-t border-gray1 flex flex-col items-center gap-6">
           
-          {/* 인정해요 (츄라이 카운트 연동 파트) */}
-          <Button 
-            variant={isLiked ? "primary" : "secondary"} 
-            isActive={true} 
-            className="w-48 shadow-sm transition-all"
-            onClick={handleLikeToggle}
-          >
-            <GoodIcon className={`w-5 h-5 ${isLiked ? 'text-white' : 'text-main'}`} />
-            <span>인정해요 {likeCount}</span>
-          </Button>
+          <div className="flex gap-4">
+            <Button
+              variant={interested ? "primary" : "secondary"}
+              isActive={true}
+              className="w-36 shadow-sm transition-all"
+              onClick={toggleInterested}
+            >
+              <GoodIcon className={`w-5 h-5 ${interested ? 'text-white' : 'text-main'}`} />
+              <span>인정해요 {(boardData.interestedCount ?? 0) + (interested ? 1 : 0)}</span>
+            </Button>
+
+            <Button
+              variant={churaid ? "primary" : "secondary"}
+              isActive={true}
+              className="w-36 shadow-sm transition-all"
+              onClick={toggleChurai}
+            >
+              <ForkIcon className={`w-5 h-5 ${churaid ? 'text-white' : 'text-main'}`} />
+              <span>츄라이 {(boardData.churaiCount ?? 0) + (churaid ? 1 : 0)}</span>
+            </Button>
+          </div>
 
           <div className="w-full flex gap-3 mt-2">
             <Button 
@@ -164,6 +160,7 @@ export default function BoardDetail() {
           <h2 className="text-lg font-bold text-black mb-6">👑 다른 Pioneer들의 추천 레시피</h2>
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-start">
             <SquareCard
+              postId={1}
               rank={1}
               title="매콤달콤 특제 떡볶이"
               likes={124}
@@ -172,6 +169,7 @@ export default function BoardDetail() {
               onClick={() => navigate('/boardDetail/1')}
             />
             <SquareCard
+              postId={2}
               rank={2}
               title="초코 가득 퐁당 쇼콜라"
               likes={98}
