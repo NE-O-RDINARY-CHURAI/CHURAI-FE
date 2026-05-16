@@ -61,25 +61,31 @@ export default function SearchPage() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="flex h-14 shrink-0 items-center gap-2 bg-gray1 px-4">
+      <header className="relative flex h-14 shrink-0 items-center justify-center bg-gray3 px-7">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center"
+          className="absolute left-7 flex h-6 w-6 shrink-0 items-center justify-center"
           aria-label="뒤로가기"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 18l-6-6 6-6" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M14.293 5.29295C14.6835 4.90243 15.3165 4.90243 15.707 5.29295C16.0975 5.68348 16.0975 6.31649 15.707 6.70702L10.414 12L15.707 17.293C16.0975 17.6835 16.0975 18.3165 15.707 18.707C15.3165 19.0975 14.6835 19.0975 14.293 18.707L8.29295 12.707C7.90243 12.3165 7.90243 11.6835 8.29295 11.293L14.293 5.29295Z"
+              fill="white"
+            />
           </svg>
         </button>
+        <h1 className="text-base font-medium text-white">검색하기</h1>
+      </header>
 
-        <div className="flex h-10 flex-1 items-center gap-1 rounded-medium4 border border-gray2 bg-white px-3">
+      <main className="flex-1 px-4 py-3">
+        <div className="mb-3 flex h-10 items-center gap-1 rounded-medium4 border border-gray2 bg-white px-3">
           <input
             type="search"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
-            placeholder="검색어를 입력해주세요."
+            placeholder="자유롭게 검색해보세요"
             className="caption1-medium flex-1 bg-transparent text-black outline-none placeholder:text-gray2"
             autoFocus
           />
@@ -95,9 +101,7 @@ export default function SearchPage() {
             </svg>
           </button>
         </div>
-      </header>
 
-      <main className="flex-1 px-4 py-3">
         {error && (
           <p className="caption1-medium mt-10 text-center text-gray3">오류가 발생했습니다. 다시 시도해주세요.</p>
         )}
