@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-// 🌟 getComments는 필요 없으므로 기존 베이스 API 두 개만 정갈하게 호출합니다.
 import {
   getPostDetail,
   createComment,
@@ -12,12 +11,14 @@ import GoodIcon from '../../assets/icons/good.svg';
 import EyeIcon from '../../assets/icons/eye.svg';
 import TalkIcon from '../../assets/icons/talk.svg';
 
+// 🌟 백엔드 로그 실물 구조에 맞춰 replies 자식 배열 타입을 명시적으로 바인딩 유도
 interface CommentItem {
   id: number;
   nickname: string;
   contents: string;
   parentId: number | null;
   createdAt: string;
+  replies?: CommentItem[]; // 👈 백엔드 찐 데이터의 핵심 키 보완 장착
 }
 
 export default function BoardDetailPage() {
@@ -42,7 +43,7 @@ export default function BoardDetailPage() {
 
   const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
 
-  // 🔄 단일 상세조회 API 하나로 게시글 정보와 12개의 댓글을 통째로 낚아채는 코어 함수
+  // 🔄 단일 상세조회 API 하나로 게시글 정보와 23개의 댓글 트리 객체를 통째로 낚아채는 코어 함수
   const fetchPostDetail = async () => {
     if (!id) return;
 
@@ -56,7 +57,7 @@ export default function BoardDetailPage() {
       setChuRaiCount(data?.churaiCount || 0);
       setHeungMiCount(data?.interestedCount || 0);
 
-      // 🌟 [종결 매칭] 콘솔창에서 실시간 생존이 확인된 data.comments를 다이렉트로 바인딩합니다!
+      // 🌟 [종결 매칭] 콘솔창에서 생존이 확인된 23개의 구조화된 comments 배열을 다이렉트로 주입합니다!
       const fetchedComments: CommentItem[] = data?.comments || [];
       setCommentsList(fetchedComments);
       
@@ -130,6 +131,7 @@ export default function BoardDetailPage() {
         contents: commentInput.trim(),
         parentId: activeParentId,
         createdAt: new Date().toISOString(),
+        replies: []
       };
 
       setCommentsList((prev) => [...prev, newComment]);
@@ -163,21 +165,20 @@ export default function BoardDetailPage() {
 
   if (!boardData) return null;
 
-  // 부모 댓글만 추출
-  const rootComments = commentsList.filter(
-    (comment) => comment.parentId === null
-  );
+  // 🌟 [대교정] 백엔드가 이미 루트 댓글들만 깔끔하게 선별해서 정렬해 보내주므로, 
+  // 잘못된 parentId 필터 조건을 과감히 걷어내고 배열 원본을 그대로 루트 가드로 세워 흐르게 만듭니다!
+  const rootComments = commentsList;
 
   return (
     <div className="min-h-screen bg-slate-100 py-10 flex justify-center items-start">
       <div className="w-[360px] bg-white shadow-md overflow-hidden flex flex-col rounded-2xl pb-6">
 
-        {/* 헤더 */}
-        <header className="w-full px-[28px] py-[20px] bg-white flex items-center relative">
+        {/* 🛠️ [교정 완료] 헤더의 배경색을 진한 회색(bg-gray-100)으로 시원하게 톤업 완료! */}
+        <header className="w-full px-[28px] py-[20px] bg-gray-100 flex items-center relative select-none">
           <button
             type="button"
             onClick={handleBackNavigation}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center hover:opacity-70 transition-opacity"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -229,9 +230,7 @@ export default function BoardDetailPage() {
                 ? '식사'
                 : '디저트'}
             </span>
-
             <span>|</span>
-
             <span>{boardData.nickname}</span>
           </div>
 
@@ -318,7 +317,6 @@ export default function BoardDetailPage() {
             <label className="text-xs font-bold text-gray-700">
               레시피 설명
             </label>
-
             <div className="w-full p-4 border border-gray-100 bg-white rounded-xl text-xs leading-relaxed text-gray-800 whitespace-pre-wrap font-medium mt-1.5">
               {boardData.contents}
             </div>
@@ -326,7 +324,6 @@ export default function BoardDetailPage() {
 
           {/* 댓글 리스트 렌더링 */}
           <section className="border-t border-gray-100 pt-5 flex flex-col gap-5 mb-6">
-
             <div className="text-xs font-black text-gray-800 flex items-center gap-1.5">
               <img
                 src={TalkIcon}
@@ -341,9 +338,9 @@ export default function BoardDetailPage() {
             <div className="flex flex-col gap-5">
               {rootComments.length > 0 ? (
                 rootComments.map((comment) => {
-                  const childReplies = commentsList.filter(
-                    (reply) => reply.parentId === comment.id
-                  );
+                  // 🌟 [대교정] 기존의 수동 전체배열 필터링 구문을 지우고, 
+                  // 자바 객체 내부에 실시간 상주가 입증된 comment.replies를 깨끗하게 연결해 줍니다!
+                  const childReplies = comment.replies || [];
 
                   return (
                     <div
@@ -353,20 +350,21 @@ export default function BoardDetailPage() {
                       {/* 부모 댓글 */}
                       <div className="flex flex-col gap-1.5">
                         <div className="flex justify-between items-center text-[10px] text-gray-400">
+                          {/* 백엔드 데이터에 존재하지 않는 닉네임 유실 오류 방지 예외 가드 가공 */}
                           <span className="font-bold text-gray-600">
-                            {comment.nickname || '익명'}
+                            {comment.nickname || '익명 Pioneer'}
                           </span>
 
                           <button
                             type="button"
                             onClick={() => setActiveParentId(comment.id)}
-                            className="text-[#FD4A12] font-black"
+                            className="text-[#FD4A12] font-black hover:opacity-80 transition-opacity"
                           >
                             답글
                           </button>
                         </div>
 
-                        <p className="text-xs text-gray-800 font-semibold">
+                        <p className="text-xs text-gray-800 font-semibold leading-relaxed break-all">
                           {comment.contents}
                         </p>
 
@@ -375,7 +373,7 @@ export default function BoardDetailPage() {
                         </span>
                       </div>
 
-                      {/* 대댓글 들여쓰기 */}
+                      {/* 대댓글 들여쓰기 출력부 (replies 연동 싱크 마감) */}
                       {childReplies.map((reply) => (
                         <div
                           key={reply.id}
@@ -387,10 +385,10 @@ export default function BoardDetailPage() {
 
                           <div className="flex-1 bg-gray-50 rounded-xl p-2.5">
                             <div className="text-[10px] text-gray-400 font-bold">
-                              {reply.nickname || '익명'}
+                              {reply.nickname || '익명 Pioneer'}
                             </div>
 
-                            <p className="text-xs text-gray-700 font-semibold mt-1">
+                            <p className="text-xs text-gray-700 font-semibold mt-1 leading-relaxed break-all">
                               {reply.contents}
                             </p>
 
@@ -438,7 +436,7 @@ export default function BoardDetailPage() {
                 }
                 value={commentInput}
                 onChange={(e) => setCommentInput(e.target.value)}
-                className="flex-1 h-10 px-4 bg-gray-100 rounded-xl text-xs font-semibold focus:outline-none"
+                className="flex-1 h-10 px-4 bg-gray-100 rounded-xl text-xs font-semibold focus:outline-none placeholder:text-gray-300"
               />
 
               <button
@@ -447,7 +445,7 @@ export default function BoardDetailPage() {
                   !commentInput.trim() ||
                   isCommentSubmitting
                 }
-                className="w-10 h-10 rounded-xl bg-[#FD4A12] flex items-center justify-center"
+                className="w-10 h-10 rounded-xl bg-[#FD4A12] flex items-center justify-center hover:opacity-90 transition-all active:scale-95"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
