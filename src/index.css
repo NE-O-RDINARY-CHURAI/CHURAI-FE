@@ -45,11 +45,11 @@ body {
 /* Typography */
 @layer utilities {
   .heading1-medium {
-    @apply font-pretendard text-[24px] font-medium leading-[150%];
+    @apply font-pretendard text-[20px] font-medium leading-[150%];
   }
 
   .heading1-regular {
-    @apply font-pretendard text-[24px] font-normal leading-[150%];
+    @apply font-pretendard text-[20px] font-normal leading-[150%];
   }
 
   .heading2-semibold {
