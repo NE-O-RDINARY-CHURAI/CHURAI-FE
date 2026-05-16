@@ -4,8 +4,10 @@ import BadgeThird from '../../assets/icons/3rd-badge.svg'
 import GoodIcon from '../../assets/icons/good.svg?react'
 import EyeIcon from '../../assets/icons/eye.svg?react'
 import ForkIcon from '../../assets/icons/fork.svg?react'
+import { usePostActions } from '../../hooks/usePostActions'
 
 interface SquareCardProps {
+  postId: number
   rank?: number
   imageSrc?: string
   title: string
@@ -16,6 +18,7 @@ interface SquareCardProps {
 }
 
 export default function SquareCard({
+  postId,
   rank,
   imageSrc,
   title,
@@ -24,6 +27,8 @@ export default function SquareCard({
   shares,
   onClick,
 }: SquareCardProps) {
+  const { churaid, toggleChurai, interested, toggleInterested } = usePostActions(postId)
+
   const rankBadges: Record<number, string> = {
     1: BadgeFirst,
     2: BadgeSecond,
@@ -57,17 +62,23 @@ export default function SquareCard({
         </h3>
 
         <div className="caption1-regular text-gray2 flex items-center gap-2">
-          <div className="hover:text-main flex cursor-pointer items-center transition-colors duration-200">
+          <button
+            className={`flex items-center gap-0.5 transition-colors duration-200 ${churaid ? 'text-main' : 'text-gray2'}`}
+            onClick={e => { e.stopPropagation(); toggleChurai() }}
+          >
             <ForkIcon className="h-4 w-4" />
-            <span>{shares}</span>
-          </div>
+            <span>{shares + (churaid ? 1 : 0)}</span>
+          </button>
 
-          <div className="hover:text-main flex items-center font-medium">
+          <button
+            className={`flex items-center gap-0.5 font-medium transition-colors duration-200 ${interested ? 'text-main' : 'text-gray2'}`}
+            onClick={e => { e.stopPropagation(); toggleInterested() }}
+          >
             <GoodIcon className="h-4 w-4" />
-            <span>{likes}</span>
-          </div>
+            <span>{likes + (interested ? 1 : 0)}</span>
+          </button>
 
-          <div className="hover:text-main flex cursor-pointer items-center transition-colors duration-200">
+          <div className="flex items-center gap-0.5">
             <EyeIcon className="h-4 w-4" />
             <span>{views}</span>
           </div>

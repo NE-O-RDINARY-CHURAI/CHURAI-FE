@@ -1,28 +1,33 @@
 import ForkIcon from '../../assets/icons/fork.svg?react'
 import LikeIcon from '../../assets/icons/good.svg?react'
 import LookIcon from '../../assets/icons/eye.svg?react'
+import { usePostActions } from '../../hooks/usePostActions'
 
 interface PostCardProps {
+  postId: number
   imageUrl?: string
   category: string
   nickname: string
   title: string
-  commentCount: number
   likeCount: number
   viewCount: number
+  churaiCount: number
   onClick?: () => void
 }
 
 const PostCard = ({
+  postId,
   imageUrl,
   category,
   nickname,
   title,
-  commentCount,
   likeCount,
   viewCount,
+  churaiCount,
   onClick,
 }: PostCardProps) => {
+  const { churaid, toggleChurai, interested, toggleInterested } = usePostActions(postId)
+
   return (
     <article
       className="rounded-medium4 flex h-23.5 w-full cursor-pointer items-center gap-3 bg-white p-3"
@@ -42,17 +47,23 @@ const PostCard = ({
         <h3 className="caption1-semibold line-clamp-1 text-black">{title}</h3>
 
         <div className="flex items-center gap-2">
-          <div className="text-gray2 flex items-center">
+          <button
+            className={`flex items-center gap-0.5 ${churaid ? 'text-main' : 'text-gray2'}`}
+            onClick={e => { e.stopPropagation(); toggleChurai() }}
+          >
             <ForkIcon className="h-4 w-4" />
-            <span className="caption2-medium">{commentCount}</span>
-          </div>
+            <span className="caption2-medium">{churaiCount + (churaid ? 1 : 0)}</span>
+          </button>
 
-          <div className="text-gray2 flex items-center">
+          <button
+            className={`flex items-center gap-0.5 ${interested ? 'text-main' : 'text-gray2'}`}
+            onClick={e => { e.stopPropagation(); toggleInterested() }}
+          >
             <LikeIcon className="h-4 w-4" />
-            <span className="caption2-medium">{likeCount}</span>
-          </div>
+            <span className="caption2-medium">{likeCount + (interested ? 1 : 0)}</span>
+          </button>
 
-          <div className="text-gray2 flex items-center">
+          <div className="text-gray2 flex items-center gap-0.5">
             <LookIcon className="h-4 w-4" />
             <span className="caption2-medium">{viewCount}</span>
           </div>
