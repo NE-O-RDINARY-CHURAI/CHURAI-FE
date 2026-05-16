@@ -80,6 +80,10 @@ body {
     @apply font-pretendard text-[16px] font-normal leading-[150%];
   }
 
+  .caption1-semibold {
+    @apply font-pretendard text-[14px] font-semibold leading-[150%];
+  }
+
   .caption1-medium {
     @apply font-pretendard text-[14px] font-medium leading-[150%];
   }
