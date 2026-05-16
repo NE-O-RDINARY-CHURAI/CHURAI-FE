@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PostCard from '../../components/card/ListCard'
 import { searchPosts, type Post } from '../../apis/search/search'
+import SearchIcon from '../../assets/icons/search.svg?react'
 
 export default function SearchPage() {
   const navigate = useNavigate()
@@ -96,9 +97,9 @@ export default function SearchPage() {
             className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-main"
             aria-label="검색"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M16 10a6 6 0 1 0-12 .002A6 6 0 0 0 16 10Zm2 0a8 8 0 0 1-1.683 4.903l5.39 5.39a1 1 0 1 1-1.414 1.414l-5.39-5.39c-.563.437-1.18.8-1.841 1.074A8 8 0 1 1 18 10Z" />
-            </svg>
+        <SearchIcon
+          className="hover:text-gray2 cursor-pointer text-main"
+        />
           </button>
         </div>
 
