@@ -16,15 +16,15 @@ export const router = createBrowserRouter([
         path: '/',
         element: <HomePage />,
       },
-      {
-        path: '/search',
-        element: <SearchPage />,
-      },
     ],
   },
   {
     element: <DefaultLayout />,
     children: [
+      {
+        path: '/search',
+        element: <SearchPage />,
+      },
       {
         path: '/board',
         element: <BoardPage />,

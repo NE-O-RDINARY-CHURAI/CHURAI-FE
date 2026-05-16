@@ -52,6 +52,7 @@ export default function HomePage() {
             {top3.slice(0, 3).map((item, index) => (
               <SwiperSlide key={item.id ?? index} className="w-auto!">
                 <SquareCard
+                  postId={item.id}
                   rank={index + 1}
                   title={item.title}
                   imageSrc={item.thumbnailUrl}
@@ -81,13 +82,15 @@ export default function HomePage() {
           {postList.map((item, index) => (
             <ListCard
               key={item.id ?? index}
+              postId={item.id}
               imageUrl={item.thumbnailUrl}
               category={CATEGORY_LABEL[item.category] ?? item.category}
               nickname={item.nickname}
               title={item.title}
-              commentCount={item.commentCount}
-              likeCount={item.interestedCount}
+              heungMiCount={item.interestedCount}
               viewCount={item.views}
+              churaiCount={item.churaiCount}
+              onClick={() => navigate(`/boardDetail/${item.id}`)}
             />
           ))}
         </div>
