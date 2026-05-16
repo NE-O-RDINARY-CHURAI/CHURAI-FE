@@ -23,7 +23,8 @@ export default function SearchPage() {
   const activeBorder = fromBoard ? 'border-main' : 'border-gray4'
   const boxBorder = isBoxActive ? activeBorder : 'border-gray2'
 
-  const allData = useRef<Post[]>([])
+  const [allData, setAllData] = useState<Post[]>([])
+  const allDataRef = useRef<Post[]>([])
   const [displayCount, setDisplayCount] = useState(CHUNK)
 
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -34,11 +35,10 @@ export default function SearchPage() {
     setSearched(true)
     setLoading(true)
     setError(false)
-    allData.current = []
-    setDisplayCount(CHUNK)
     try {
       const data = await searchPosts(trimmed)
-      allData.current = data.content
+      allDataRef.current = data.content
+      setAllData(data.content)
       setDisplayCount(CHUNK)
     } catch (e) {
       console.error(e)
@@ -52,7 +52,7 @@ export default function SearchPage() {
     if (observerRef.current) observerRef.current.disconnect()
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        setDisplayCount(prev => Math.min(prev + CHUNK, allData.current.length))
+        setDisplayCount(prev => Math.min(prev + CHUNK, allDataRef.current.length))
       }
     })
     if (node) observerRef.current.observe(node)
@@ -60,8 +60,8 @@ export default function SearchPage() {
 
   useEffect(() => () => observerRef.current?.disconnect(), [])
 
-  const visiblePosts = allData.current.slice(0, displayCount)
-  const hasMore = displayCount < allData.current.length
+  const visiblePosts = allData.slice(0, displayCount)
+  const hasMore = displayCount < allData.length
 
   return (
     <div className="flex min-h-dvh flex-col bg-white">
@@ -119,7 +119,7 @@ export default function SearchPage() {
         {error && (
           <p className="caption1-medium mt-10 text-center text-gray3">오류가 발생했습니다. 다시 시도해주세요.</p>
         )}
-        {searched && allData.current.length === 0 && !loading && !error && (
+        {searched && allData.length === 0 && !loading && !error && (
           <p className="caption1-medium mt-10 text-center text-gray3">검색 결과가 없습니다</p>
         )}
 

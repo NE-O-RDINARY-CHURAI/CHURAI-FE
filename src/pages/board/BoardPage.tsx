@@ -46,7 +46,8 @@ export default function BoardPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
-  const allData = useRef<(RankingPost | BoardPost)[]>([])
+  const [allData, setAllData] = useState<(RankingPost | BoardPost)[]>([])
+  const allDataRef = useRef<(RankingPost | BoardPost)[]>([])
   const [displayCount, setDisplayCount] = useState(CHUNK)
 
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -63,7 +64,8 @@ export default function BoardPage() {
         const res = await getBoardPosts(cat)
         newData = res.content
       }
-      allData.current = newData
+      allDataRef.current = newData
+      setAllData(newData)
       setDisplayCount(CHUNK)
     } catch (e) {
       console.error(e)
@@ -81,7 +83,7 @@ export default function BoardPage() {
     if (observerRef.current) observerRef.current.disconnect()
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        setDisplayCount(prev => Math.min(prev + CHUNK, allData.current.length))
+        setDisplayCount(prev => Math.min(prev + CHUNK, allDataRef.current.length))
       }
     })
     if (node) observerRef.current.observe(node)
@@ -99,8 +101,8 @@ export default function BoardPage() {
 
   useEffect(() => () => observerRef.current?.disconnect(), [])
 
-  const visiblePosts = allData.current.slice(0, displayCount)
-  const hasMore = displayCount < allData.current.length
+  const visiblePosts = allData.slice(0, displayCount)
+  const hasMore = displayCount < allData.length
 
   return (
     <div className="flex min-h-dvh flex-col bg-[#FAFAFA]">
@@ -186,7 +188,7 @@ export default function BoardPage() {
         {error && (
           <p className="caption1-medium mt-10 text-center text-gray3">오류가 발생했습니다. 다시 시도해주세요.</p>
         )}
-        {!loading && !error && allData.current.length === 0 && (
+        {!loading && !error && allData.length === 0 && (
           <p className="caption1-medium mt-10 text-center text-gray3">게시글이 없습니다</p>
         )}
 
