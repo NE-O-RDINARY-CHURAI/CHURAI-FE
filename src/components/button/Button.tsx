@@ -1,44 +1,68 @@
 import React from 'react';
+import HamburgerWhite from '../../assets/icons/hmabuger-white.svg';
+import HamburgerOrange from '../../assets/icons/hmabuger-orange.svg';
+import HamburgerGray from '../../assets/icons/hmabuger-gray.svg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary';
-  /** 버튼의 너비를 동적으로 제어하기 위한 props.
-   * - 'auto': 글자 크기에 맞춤 (기본값, 최소 98px 유지)
-   * - 'full': 가로 전체를 꽉 채움 (w-full)
-   */
   width?: 'auto' | 'full';
+  showIcon?: boolean;
   children: React.ReactNode;
 }
 
 export default function Button({ 
   variant = 'primary', 
   width = 'auto', 
+  showIcon = true, 
   children, 
   className = '', 
   ...props 
 }: ButtonProps) {
-  
-  // 1. 피그마 기준 스펙
-  const baseStyle = 'inline-flex items-center justify-center h-[37px] px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none';
 
-  // 2. 너비 동적 변화
+  const baseStyle = 'inline-flex items-center justify-center h-9 px-4 py-2 caption1-medium rounded-lg transition-all duration-200 focus:outline-none gap-2 border';
+
   const widthStyles = {
-    auto: 'min-w-[98px] w-auto', 
-    full: 'w-full',            
+    auto: 'min-w-24 w-auto',
+    full: 'w-full',
   };
 
-  const variants = {
-    primary: 'bg-[#FD4A12] text-white hover:bg-[#e03e0b] active:bg-[#c43307]',
-    secondary: 'bg-[#FFEDE7] text-[#FD4A12] border border-[#FD4A12] hover:bg-[#ffdcd0] active:bg-[#ffcab8]',
-    tertiary: 'bg-[#F4F5F6] text-[#555555] border border-[#E5E7EB] hover:bg-[#eaebeb] active:bg-[#dddfdf]',
+  const variantStyles = {
+    primary: 'bg-sub text-main border-main hover:bg-main hover:text-white',
+    secondary: 'bg-gray1 text-gray3 border-transparent hover:bg-gray3 hover:text-white hover:border-gray3',
+    tertiary: 'bg-white text-gray3 border-gray2 hover:text-main hover:border-main',
   };
 
   return (
     <button
-      className={`${baseStyle} ${widthStyles[width]} ${variants[variant]} ${className}`}
+      className={`${baseStyle} ${widthStyles[width]} ${variantStyles[variant]} group ${className}`}
       {...props}
     >
-      {children}
+      {showIcon && (
+        <div className="relative w-4 h-4 flex-shrink-0">
+          
+          {variant === 'primary' && (
+            <>
+              <img src={HamburgerOrange} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-100 group-hover:opacity-0 transition-opacity duration-200" />
+              <img src={HamburgerWhite} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            </>
+          )}
+
+          {variant === 'secondary' && (
+            <>
+              <img src={HamburgerGray} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-100 group-hover:opacity-0 transition-opacity duration-200" />
+              <img src={HamburgerWhite} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            </>
+          )}
+
+          {variant === 'tertiary' && (
+            <>
+              <img src={HamburgerGray} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-100 group-hover:opacity-0 transition-opacity duration-200" />
+              <img src={HamburgerOrange} alt="" className="absolute inset-0 w-4 h-4 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            </>
+          )}
+        </div>
+      )}
+      <span>{children}</span>
     </button>
   );
 }

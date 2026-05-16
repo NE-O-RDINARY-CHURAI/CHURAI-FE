@@ -7,11 +7,11 @@ interface TagProps {
 
 export default function Tag({ variant = 'default', children, onDelete, className = '' }: TagProps) {
   
-  const baseStyle = 'inline-flex items-center gap-1.5 h-[37px] px-4 py-2 bg-[#FFFFFF] border text-sm font-medium rounded-full transition-all duration-200';
 
+  const baseStyle = 'inline-flex items-center gap-1.5 h-9 px-4 py-2 bg-white border caption1-medium rounded-full transition-all duration-200';
   const variants = {
-    default: 'border-[#B6B6B6] text-[#555555]',
-    active: 'border-[#FD4A12] text-[#FD4A12]',
+    default: 'border-gray2 text-gray3',
+    active: 'border-main text-main',
   };
 
   return (
@@ -25,7 +25,7 @@ export default function Tag({ variant = 'default', children, onDelete, className
             e.stopPropagation();
             onDelete();
           }}
-          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[#B6B6B6] hover:text-[#555555] active:text-black transition-colors"
+          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-gray2 hover:text-gray4 active:text-black transition-colors"
           aria-label="태그 삭제"
         >
           <svg

@@ -29,14 +29,14 @@ export default function SelectBox({ label, value, onChange }: SelectBoxProps) {
 
   return (
     <div ref={containerRef} className="flex flex-col w-full gap-2">
-      {label && <label className="text-sm font-medium text-slate-700">{label}</label>}
+      {label && <label className="caption1-medium text-gray4">{label}</label>}
       <div className="relative">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-between w-full h-[40px] px-4 py-2 bg-[#FFF] border border-[#B6B6B6] rounded-lg text-sm text-left transition-all duration-200 focus:outline-none focus:border-[#FD4A12]"
+          className="flex items-center justify-between w-full h-10 px-4 py-2 bg-white border border-gray2 rounded-lg caption1-regular text-left transition-all duration-200 focus:outline-none focus:border-main"
         >
-          <span className={value === '' ? 'text-[#B6B6B6]' : 'text-slate-900 font-medium'}>
+          <span className={value === '' ? 'text-gray2' : 'text-black font-semibold'}>
             {valueLabels[value]}
           </span>
 
@@ -49,7 +49,7 @@ export default function SelectBox({ label, value, onChange }: SelectBoxProps) {
         </button>
 
         {isOpen && (
-          <ul className="absolute z-10 w-full mt-1 bg-white border border-[#E5E7EB] rounded-lg shadow-lg overflow-hidden">
+          <ul className="absolute z-10 w-full mt-1 bg-white border border-gray1 rounded-lg shadow-lg overflow-hidden">
             <li>
               <button
                 type="button"
@@ -57,8 +57,8 @@ export default function SelectBox({ label, value, onChange }: SelectBoxProps) {
                   onChange('MEAL');
                   setIsOpen(false);
                 }}
-                className={`w-full px-4 py-2.5 text-sm text-left transition-colors hover:bg-[#FFEDE7] hover:text-[#FD4A12] ${
-                  value === 'MEAL' ? 'bg-[#FFEDE7] text-[#FD4A12] font-semibold' : 'text-slate-700'
+                className={`w-full px-4 py-2.5 caption1-regular text-left transition-colors hover:bg-sub hover:text-main ${
+                  value === 'MEAL' ? 'bg-sub text-main font-semibold' : 'text-gray4'
                 }`}
               >
                 식사류
@@ -71,8 +71,8 @@ export default function SelectBox({ label, value, onChange }: SelectBoxProps) {
                   onChange('DESSERT');
                   setIsOpen(false);
                 }}
-                className={`w-full px-4 py-2.5 text-sm text-left transition-colors hover:bg-[#FFEDE7] hover:text-[#FD4A12] ${
-                  value === 'DESSERT' ? 'bg-[#FFEDE7] text-[#FD4A12] font-semibold' : 'text-slate-700'
+                className={`w-full px-4 py-2.5 caption1-regular text-left transition-colors hover:bg-sub hover:text-main ${
+                  value === 'DESSERT' ? 'bg-sub text-main font-semibold' : 'text-gray4'
                 }`}
               >
                 디저트류
