@@ -16,6 +16,10 @@ export const router = createBrowserRouter([
         path: '/',
         element: <HomePage />,
       },
+      {
+        path: '/search',
+        element: <SearchPage />,
+      },
     ],
   },
   {
@@ -24,10 +28,6 @@ export const router = createBrowserRouter([
       {
         path: '/board',
         element: <BoardPage />,
-      },
-      {
-        path: '/search',
-        element: <SearchPage />,
       },
       {
         path: '/boardDetail/:id',
