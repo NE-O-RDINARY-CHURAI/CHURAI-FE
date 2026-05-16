@@ -1,1 +1,94 @@
-@import "tailwindcss";
+/* index.css */
+
+@import 'tailwindcss';
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+@theme {
+  /* Font */
+  --font-pretendard: 'Pretendard', sans-serif;
+
+  /* Color */
+  --color-main: #fd4a12;
+  --color-sub: #ffede7;
+
+  --color-black: #0a0a0a;
+  --color-white: #ffffff;
+
+  --color-gray1: #f4f5f6;
+  --color-gray2: #cdd1d5;
+  --color-gray3: #8a949e;
+  --color-gray4: #464c53;
+
+  /* Radius */
+  --radius-small1: 4px;
+  --radius-medium4: 8px;
+}
+
+/* Reset / Global */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-pretendard);
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+/* Typography */
+@layer utilities {
+  .heading1-medium {
+    @apply font-pretendard text-[20px] font-medium leading-[150%];
+  }
+
+  .heading1-regular {
+    @apply font-pretendard text-[20px] font-normal leading-[150%];
+  }
+
+  .heading2-semibold {
+    @apply font-pretendard text-[20px] font-semibold leading-[150%];
+  }
+
+  .body1-semibold {
+    @apply font-pretendard text-[18px] font-semibold leading-[150%];
+  }
+
+  .body1-medium {
+    @apply font-pretendard text-[18px] font-medium leading-[150%];
+  }
+
+  .body1-regular {
+    @apply font-pretendard text-[18px] font-normal leading-[150%];
+  }
+
+  .body2-medium {
+    @apply font-pretendard text-[16px] font-medium leading-[150%];
+  }
+
+  .body2-regular {
+    @apply font-pretendard text-[16px] font-normal leading-[150%];
+  }
+
+  .caption1-medium {
+    @apply font-pretendard text-[14px] font-medium leading-[150%];
+  }
+
+  .caption1-regular {
+    @apply font-pretendard text-[14px] font-normal leading-[150%];
+  }
+
+  .caption2-medium {
+    @apply font-pretendard text-[12px] font-medium leading-[150%];
+  }
+
+  .caption2-regular {
+    @apply font-pretendard text-[12px] font-normal leading-[150%];
+  }
+}
