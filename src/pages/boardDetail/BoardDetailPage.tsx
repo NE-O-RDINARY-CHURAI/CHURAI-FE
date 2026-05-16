@@ -44,31 +44,31 @@ export default function BoardDetailPage() {
   const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
 
   // 🔄 단일 상세조회 API 하나로 게시글 정보와 23개의 댓글 트리 객체를 통째로 낚아채는 코어 함수
-  const fetchPostDetail = async () => {
-    if (!id) return;
+  // const fetchPostDetail = async () => {
+  //   if (!id) return;
 
-    try {
-      const data: any = await getPostDetail(id);
+  //   try {
+  //     const data: any = await getPostDetail(id);
 
-      console.log('콘솔 검증 완료 찐 데이터:', data);
+  //     console.log('콘솔 검증 완료 찐 데이터:', data);
 
-      setBoardData(data);
+  //     setBoardData(data);
 
-      setChuRaiCount(data?.churaiCount || 0);
-      setHeungMiCount(data?.interestedCount || 0);
+  //     setChuRaiCount(data?.churaiCount || 0);
+  //     setHeungMiCount(data?.interestedCount || 0);
 
-      // 🌟 [종결 매칭] 콘솔창에서 생존이 확인된 23개의 구조화된 comments 배열을 다이렉트로 주입합니다!
-      const fetchedComments: CommentItem[] = data?.comments || [];
-      setCommentsList(fetchedComments);
+  //     // 🌟 [종결 매칭] 콘솔창에서 생존이 확인된 23개의 구조화된 comments 배열을 다이렉트로 주입합니다!
+  //     const fetchedComments: CommentItem[] = data?.comments || [];
+  //     setCommentsList(fetchedComments);
       
-    } catch (error) {
-      console.error('상세 조회 실패:', error);
-      alert('게시글을 불러오지 못했습니다.');
-      navigate('/board');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('상세 조회 실패:', error);
+  //     alert('게시글을 불러오지 못했습니다.');
+  //     navigate('/board');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     let cancelled = false
