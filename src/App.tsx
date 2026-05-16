@@ -4,9 +4,7 @@ function App() {
       <main className="mx-auto flex min-h-[90vh] max-w-md flex-col rounded-3xl bg-white p-6 shadow-lg">
         <header className="mb-8">
           <p className="text-sm font-semibold text-blue-500">NDHT 0516</p>
-          <h1 className="mt-2 text-3xl font-bold text-slate-900">
-            해커톤 프론트 세팅 완료
-          </h1>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900">해커톤 프론트 세팅 완료</h1>
           <p className="mt-3 text-sm leading-6 text-slate-500">
             React + TypeScript + Vite + Tailwind CSS가 정상 적용되는지 확인하는 기본 화면입니다.
           </p>
