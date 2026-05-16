@@ -1,14 +1,21 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
+import HomeLayout from '../layout/HomeLayout'
+import DefaultLayout from '../layout/DefaultLayout'
 
 export const router = createBrowserRouter([
   {
-    element: <Outlet />, // Layout 자리
+    element: <HomeLayout />,
     children: [
       {
         path: '/',
         element: <App />, // Home 자리
       },
+    ],
+  },
+  {
+    element: <DefaultLayout />,
+    children: [
       {
         path: '/board',
         element: <></>, // Board 자리
