@@ -1,11 +1,14 @@
+import axios from 'axios'
 import type { SearchResponse } from './search.types'
 
-const BASE_URL = 'http://churai.kro.kr/api/v1'
+// 공통 baseURL 설정 (토큰 등 공통 헤더 필요 시 여기에 interceptor 추가)
+const axiosInstance = axios.create({
+  baseURL: 'http://churai.kro.kr/api/v1',
+})
 
 export async function searchPosts(keyword: string, page: number): Promise<SearchResponse> {
-  const res = await fetch(
-    `${BASE_URL}/posts/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=20`,
-  )
-  if (!res.ok) throw new Error(`${res.status}`)
-  return res.json()
+  const { data } = await axiosInstance.get<SearchResponse>('/posts/search', {
+    params: { keyword, page, size: 20 },
+  })
+  return data
 }
