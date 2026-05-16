@@ -19,7 +19,7 @@ export default function Button({
   ...props 
 }: ButtonProps) {
 
-  const baseStyle = 'inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none gap-2 border';
+  const baseStyle = 'inline-flex items-center justify-center h-9 px-4 py-2 caption1-medium rounded-lg transition-all duration-200 focus:outline-none gap-2 border';
 
   const widthStyles = {
     auto: 'min-w-24 w-auto',
@@ -27,9 +27,9 @@ export default function Button({
   };
 
   const variantStyles = {
-    primary: 'bg-[#FFEDE7] text-[#FD4A12] border-[#FD4A12] hover:bg-[#FD4A12] hover:text-white',
-    secondary: 'bg-[#F4F5F6] text-[#8A949E] border-transparent hover:bg-[#8A949E] hover:text-white hover:border-[#8A949E]',
-    tertiary: 'bg-white text-[#8A949E] border-[#CDD1D5] hover:text-[#FD4A12] hover:border-[#FD4A12]',
+    primary: 'bg-sub text-main border-main hover:bg-main hover:text-white',
+    secondary: 'bg-gray1 text-gray3 border-transparent hover:bg-gray3 hover:text-white hover:border-gray3',
+    tertiary: 'bg-white text-gray3 border-gray2 hover:text-main hover:border-main',
   };
 
   return (

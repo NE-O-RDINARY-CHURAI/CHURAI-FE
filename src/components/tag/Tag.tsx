@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface TagProps {
   children: string;
   variant?: 'default' | 'active';
@@ -7,11 +9,13 @@ interface TagProps {
 
 export default function Tag({ variant = 'default', children, onDelete, className = '' }: TagProps) {
   
-  const baseStyle = 'inline-flex items-center gap-1.5 h-9 px-4 py-2 bg-[#FFFFFF] border text-sm font-medium rounded-full transition-all duration-200';
+  // 🌟 변경 포인트: text-sm font-medium -> caption1-medium 변경
+  const baseStyle = 'inline-flex items-center gap-1.5 h-9 px-4 py-2 bg-white border caption1-medium rounded-full transition-all duration-200';
 
+  // 🌟 변경 포인트: 하드코딩 헥사코드 제거 및 gray2, gray3, main 테마 적용
   const variants = {
-    default: 'border-[#B6B6B6] text-[#555555]',
-    active: 'border-[#FD4A12] text-[#FD4A12]',
+    default: 'border-gray2 text-gray3',
+    active: 'border-main text-main',
   };
 
   return (
@@ -25,7 +29,8 @@ export default function Tag({ variant = 'default', children, onDelete, className
             e.stopPropagation();
             onDelete();
           }}
-          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[#B6B6B6] hover:text-[#555555] active:text-black transition-colors"
+          // 🌟 변경 포인트: text-[#B6B6B6] -> text-gray2 / hover:text-gray4 변경
+          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-gray2 hover:text-gray4 active:text-black transition-colors"
           aria-label="태그 삭제"
         >
           <svg
