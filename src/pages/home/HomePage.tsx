@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import ArrowIcon from '../../assets/icons/arrow-down.svg?react'
 import dujjonku from '../../assets/images/dujjonku.png'
 import { useNavigate } from 'react-router-dom'
@@ -6,108 +7,23 @@ import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import SquareCard from '../../components/card/SquareCard'
 import ListCard from '../../components/card/ListCard'
+import { getPostRanking, getPostList } from '../../apis/board/boardApi'
+import type { PostDetailResponse } from '../../apis/board/boardApi'
 
-const TOP3_MOCK = [
-  { id: 1, rank: 1, title: '두부 김치 볶음', likes: 120, views: 340, shares: 56 },
-  { id: 2, rank: 2, title: '계란말이 김밥', likes: 98, views: 210, shares: 33 },
-  { id: 3, rank: 3, title: '된장찌개 정석', likes: 87, views: 190, shares: 28 },
-]
-
-const RECIPE_LIST_MOCK = [
-  {
-    id: 1,
-    category: '한식',
-    nickname: '요리왕',
-    title: '두부 김치 볶음 황금 레시피',
-    commentCount: 12,
-    likeCount: 120,
-    viewCount: 340,
-  },
-  {
-    id: 2,
-    category: '일식',
-    nickname: '집밥러버',
-    title: '계란말이 김밥 완벽 가이드',
-    commentCount: 8,
-    likeCount: 98,
-    viewCount: 210,
-  },
-  {
-    id: 3,
-    category: '중식',
-    nickname: '쉐프닝',
-    title: '된장찌개 정석 레시피',
-    commentCount: 5,
-    likeCount: 87,
-    viewCount: 190,
-  },
-  {
-    id: 4,
-    category: '양식',
-    nickname: '홈쿡',
-    title: '크림 파스타 쉽게 만들기',
-    commentCount: 20,
-    likeCount: 75,
-    viewCount: 160,
-  },
-  {
-    id: 5,
-    category: '한식',
-    nickname: '밥심',
-    title: '닭갈비 덮밥 꿀팁 공유',
-    commentCount: 15,
-    likeCount: 110,
-    viewCount: 290,
-  },
-  {
-    id: 6,
-    category: '분식',
-    nickname: '떡볶이왕',
-    title: '국물 떡볶이 비법 레시피',
-    commentCount: 30,
-    likeCount: 200,
-    viewCount: 520,
-  },
-  {
-    id: 7,
-    category: '일식',
-    nickname: '라멘러버',
-    title: '진한 돈코츠 라멘 만들기',
-    commentCount: 18,
-    likeCount: 145,
-    viewCount: 380,
-  },
-  {
-    id: 8,
-    category: '양식',
-    nickname: '브런치',
-    title: '아보카도 토스트 브런치 레시피',
-    commentCount: 9,
-    likeCount: 63,
-    viewCount: 140,
-  },
-  {
-    id: 9,
-    category: '한식',
-    nickname: '집밥달인',
-    title: '순두부찌개 깊은 맛 내는 법',
-    commentCount: 11,
-    likeCount: 90,
-    viewCount: 230,
-  },
-  {
-    id: 10,
-    category: '중식',
-    nickname: '웍마스터',
-    title: '새우 볶음밥 황금 레시피',
-    commentCount: 7,
-    likeCount: 58,
-    viewCount: 175,
-  },
-]
+const CATEGORY_LABEL: Record<string, string> = {
+  MEAL: '식사',
+  DESSERT: '디저트',
+}
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const [top3, setTop3] = useState<PostDetailResponse[]>([])
+  const [postList, setPostList] = useState<PostDetailResponse[]>([])
+
+  useEffect(() => {
+    getPostRanking().then(setTop3).catch(console.error)
+    getPostList().then(setPostList).catch(console.error)
+  }, [])
 
   return (
     <main className="px-3">
@@ -133,9 +49,17 @@ export default function HomePage() {
             slidesPerView="auto"
             className="overflow-visible!"
           >
-            {TOP3_MOCK.map(item => (
-              <SwiperSlide key={item.id} className="w-auto!">
-                <SquareCard {...item} onClick={() => navigate(`/boardDetail/${item.id}`)} />
+            {top3.slice(0, 3).map((item, index) => (
+              <SwiperSlide key={item.id ?? index} className="w-auto!">
+                <SquareCard
+                  rank={index + 1}
+                  title={item.title}
+                  imageSrc={item.thumbnailUrl}
+                  likes={item.interestedCount}
+                  views={item.views}
+                  shares={item.churaiCount}
+                  onClick={() => navigate(`/boardDetail/${item.id}`)}
+                />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -154,8 +78,17 @@ export default function HomePage() {
           </button>
         </div>
         <div className="mt-2 flex flex-col gap-2">
-          {RECIPE_LIST_MOCK.map((item, index) => (
-            <ListCard key={index} {...item} />
+          {postList.map((item, index) => (
+            <ListCard
+              key={item.id ?? index}
+              imageUrl={item.thumbnailUrl}
+              category={CATEGORY_LABEL[item.category] ?? item.category}
+              nickname={item.nickname}
+              title={item.title}
+              commentCount={item.commentCount}
+              likeCount={item.interestedCount}
+              viewCount={item.views}
+            />
           ))}
         </div>
         <div className="mt-3 flex justify-center">
