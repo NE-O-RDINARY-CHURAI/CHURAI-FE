@@ -2,7 +2,7 @@
 
 # CHURAI
 
-### *비주류라고? 일단 한번 츄라이!*
+### _비주류라고? 일단 한번 츄라이!_
 
 </div>
 
@@ -10,9 +10,9 @@
 
 ## 🙋🏻‍♀️ CHURAI의 FE Developer를 소개합니다!
 
-| <a href="https://github.com/p1001q"><img src="https://avatars.githubusercontent.com/u/201849046?v=4" width="120px;" alt=""/></a> | <a href="https://github.com/kinjaebeom"><img src="https://avatars.githubusercontent.com/u/103941165?v=4" width="120px;" alt=""/></a> | <a href="https://github.com/nue-os"><img src="https://avatars.githubusercontent.com/u/128093404?v=4" width="120px;" alt=""/></a> |
-| --- | --- | --- |
-| 클랩<br/>박수연 | 꿀범<br/>김재범 | 밤비<br/>김소은 |
+| <a href="https://github.com/p1001q"><img src="https://github.com/p1001q.png" width="120px;" alt="클랩"/></a> | <a href="https://github.com/kinjaebeom"><img src="https://github.com/kinjaebeom.png" width="120px;" alt="꿀범"/></a> | <a href="https://github.com/nue-os"><img src="https://github.com/nue-os.png" width="120px;" alt="밤비"/></a> |
+| ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 클랩<br/>박수연                                                                                              | 꿀범<br/>김재범                                                                                                      | 밤비<br/>김소은                                                                                              |
 
 <br>
 
@@ -34,18 +34,22 @@
 # 🍽️ 핵심 기능
 
 ### 📸 레시피 업로드
+
 - 음식 사진 업로드
 - 나만의 레시피 작성 및 공유
 
 ### 🥘 카테고리 분류
+
 - 식사류
 - 디저트류
 
 ### 💬 커뮤니티 기반 소통
+
 - 다른 유저의 레시피 탐색
 - 취향 공유 및 공감
 
 ### 🔥 비주류 레시피 발견
+
 - 독특한 음식 조합 탐색
 - 새로운 취향 경험
 
@@ -89,12 +93,10 @@ CHURAI는 사람들이 자신만의 음식 취향을 자유롭게 공유하고,
 ## ✅ 규칙
 
 ```bash
-{type}/{scope}-{short-description}
+{type}/{short-description}
 ```
 
 - `type`은 소문자 사용
-- `scope`는 가능한 짧게 작성
-  - ex) web, admin, api, auth
 - `short-description`은 kebab-case 사용
 - 한글 브랜치명 사용 금지
 - 의미 없는 약어 남발 금지
@@ -229,13 +231,16 @@ feature ← 기능 개발 브랜치
 ## 📌 브랜치 역할
 
 ### main
+
 - 실제 배포 브랜치
 
 ### develop
+
 - 개발 통합 브랜치
 - feature 브랜치 merge 대상
 
 ### feature
+
 - 기능 단위 작업 브랜치
 
 ---
@@ -261,20 +266,20 @@ feature ← 기능 개발 브랜치
 
 ## 📌 커밋 유형
 
-| 타입 | 설명 |
-|---|---|
-| Init | 프로젝트 초기 세팅 |
-| Feat | 새로운 기능 추가 |
-| Fix | 버그 수정 |
-| Design | UI/CSS 수정 |
-| Typing Error | 오타 수정 |
-| Docs | 문서 수정 |
-| Mod | 폴더 구조 이동 및 파일명 수정 |
-| Add | 파일 추가 |
-| Del | 파일 삭제 |
-| Refactor | 코드 리팩토링 |
-| Chore | 빌드, 배포 등 기타 작업 |
-| Merge | 브랜치 병합 |
+| 타입         | 설명                          |
+| ------------ | ----------------------------- |
+| Init         | 프로젝트 초기 세팅            |
+| Feat         | 새로운 기능 추가              |
+| Fix          | 버그 수정                     |
+| Design       | UI/CSS 수정                   |
+| Typing Error | 오타 수정                     |
+| Docs         | 문서 수정                     |
+| Mod          | 폴더 구조 이동 및 파일명 수정 |
+| Add          | 파일 추가                     |
+| Del          | 파일 삭제                     |
+| Refactor     | 코드 리팩토링                 |
+| Chore        | 빌드, 배포 등 기타 작업       |
+| Merge        | 브랜치 병합                   |
 
 ---
 
