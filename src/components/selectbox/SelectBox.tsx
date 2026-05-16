@@ -34,7 +34,7 @@ export default function SelectBox({ label, value, onChange }: SelectBoxProps) {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-between w-full h-[40px] px-4 py-2 bg-[#FFF] border border-[#B6B6B6] rounded-lg text-sm text-left transition-all duration-200 focus:outline-none focus:border-[#FD4A12]"
+          className="flex items-center justify-between w-full h-10 px-4 py-2 bg-[#FFF] border border-[#B6B6B6] rounded-lg text-sm text-left transition-all duration-200 focus:outline-none focus:border-[#FD4A12]"
         >
           <span className={value === '' ? 'text-[#B6B6B6]' : 'text-slate-900 font-medium'}>
             {valueLabels[value]}

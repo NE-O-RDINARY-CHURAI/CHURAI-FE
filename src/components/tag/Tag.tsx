@@ -7,7 +7,7 @@ interface TagProps {
 
 export default function Tag({ variant = 'default', children, onDelete, className = '' }: TagProps) {
   
-  const baseStyle = 'inline-flex items-center gap-1.5 h-[37px] px-4 py-2 bg-[#FFFFFF] border text-sm font-medium rounded-full transition-all duration-200';
+  const baseStyle = 'inline-flex items-center gap-1.5 h-9 px-4 py-2 bg-[#FFFFFF] border text-sm font-medium rounded-full transition-all duration-200';
 
   const variants = {
     default: 'border-[#B6B6B6] text-[#555555]',
