@@ -21,18 +21,8 @@ export default function HomePage() {
   const [postList, setPostList] = useState<PostDetailResponse[]>([])
 
   useEffect(() => {
-    getPostRanking()
-      .then(data => {
-        console.log('ranking:', data)
-        setTop3(data)
-      })
-      .catch(console.error)
-    getPostList()
-      .then(data => {
-        console.log('postList:', data)
-        setPostList(data)
-      })
-      .catch(console.error)
+    getPostRanking().then(setTop3).catch(console.error)
+    getPostList().then(setPostList).catch(console.error)
   }, [])
 
   return (
