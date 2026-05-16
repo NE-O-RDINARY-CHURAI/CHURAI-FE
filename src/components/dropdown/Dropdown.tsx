@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import ArrowDownIcon from '../../assets/iconsnpm install -D vite-plugin-svgr/arrow-down.svg?react'
+import ArrowDownIcon from '../../assets/icons/arrow-down.svg?react'
 
 interface DropdownProps {
   options: string[]
