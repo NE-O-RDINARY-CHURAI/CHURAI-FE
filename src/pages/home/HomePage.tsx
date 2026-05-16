@@ -8,9 +8,9 @@ import SquareCard from '../../components/card/SquareCard'
 import ListCard from '../../components/card/ListCard'
 
 const TOP3_MOCK = [
-  { id: 1, title: '두부 김치 볶음', likes: 120, views: 340, shares: 56 },
-  { id: 2, title: '계란말이 김밥', likes: 98, views: 210, shares: 33 },
-  { id: 3, title: '된장찌개 정석', likes: 87, views: 190, shares: 28 },
+  { id: 1, rank: 1, title: '두부 김치 볶음', likes: 120, views: 340, shares: 56 },
+  { id: 2, rank: 2, title: '계란말이 김밥', likes: 98, views: 210, shares: 33 },
+  { id: 3, rank: 3, title: '된장찌개 정석', likes: 87, views: 190, shares: 28 },
 ]
 
 const RECIPE_LIST_MOCK = [
