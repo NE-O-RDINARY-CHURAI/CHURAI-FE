@@ -1,14 +1,37 @@
-import axios from 'axios'
+import { api } from '../api'
 import type { SearchResponse } from './search.types'
 
-// 공통 baseURL 설정 (토큰 등 공통 헤더 필요 시 여기에 interceptor 추가)
-const axiosInstance = axios.create({
-  baseURL: 'http://churai.kro.kr/api/v1',
-})
+interface ApiPost {
+  id: number
+  title: string
+  nickname: string
+  category: string
+  thumbnailUrl?: string
+  interestedCount: number
+  churaiCount: number
+  commentCount: number
+}
 
-export async function searchPosts(keyword: string, page: number): Promise<SearchResponse> {
-  const { data } = await axiosInstance.get<SearchResponse>('/posts/search', {
-    params: { keyword, page, size: 20 },
+interface ApiResponse<T> {
+  isSuccess: boolean
+  result: T
+}
+
+const CATEGORY_LABEL: Record<string, string> = { MAIN_DISH: '식사', DESSERT: '디저트' }
+
+export async function searchPosts(keyword: string): Promise<SearchResponse> {
+  const { data } = await api.get<ApiResponse<ApiPost[]>>('/posts/search', {
+    params: { keyword },
   })
-  return data
+  const posts = (data.result ?? []).map(p => ({
+    postId: p.id,
+    title: p.title,
+    nickname: p.nickname,
+    category: CATEGORY_LABEL[p.category] ?? p.category,
+    thumbnailUrl: p.thumbnailUrl,
+    heungMiCount: p.interestedCount,
+    chuRaiCount: p.churaiCount,
+    commentCount: p.commentCount,
+  }))
+  return { content: posts, page: 0, size: posts.length, totalElements: posts.length, totalPages: 1, hasNext: false }
 }

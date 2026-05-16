@@ -87,7 +87,7 @@ export default function HomePage() {
               category={CATEGORY_LABEL[item.category] ?? item.category}
               nickname={item.nickname}
               title={item.title}
-              likeCount={item.interestedCount}
+              heungMiCount={item.interestedCount}
               viewCount={item.views}
               churaiCount={item.churaiCount}
               onClick={() => navigate(`/boardDetail/${item.id}`)}
