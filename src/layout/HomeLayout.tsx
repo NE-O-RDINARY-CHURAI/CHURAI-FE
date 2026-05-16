@@ -6,9 +6,9 @@ import SearchIcon from '../assets/icons/search.svg?react'
 export default function HomeLayout() {
   return (
     <BaseLayout>
-      <header className="relative flex items-center justify-center py-2.5">
-        <Logo className="w-20" />
-        <SearchIcon className="text-gray3 absolute right-7" />
+      <header className="bg-main relative mb-6 flex h-14 items-center justify-center text-white">
+        <Logo className="h-9" />
+        <SearchIcon className="absolute right-7" />
       </header>
       <Outlet />
     </BaseLayout>
