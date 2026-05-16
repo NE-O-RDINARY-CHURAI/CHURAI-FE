@@ -115,15 +115,14 @@ export const searchPosts = async (keyword: string) => {
   return response.data.result;
 };
 
-// 1.7 댓글 및 대댓글 작성
+// 🌟 1.7 댓글 및 대댓글 작성 (스웨거 명세 규격 밀착 매칭)
 export const createComment = async (postId: string, requestBody: CreateCommentRequest) => {
-  const response = await api.post<ApiResponse<any>>(`/posts/${postId}/comments`, requestBody);
+  // 백엔드가 요구하는 { contents, parentId } 구조와 명시적으로 1:1 결합 유도
+  const finalBody = {
+    contents: requestBody.contents,
+    parentId: requestBody.parentId // 일반 댓글일 때는 null, 대댓글일 때는 부모 ID가 깨끗하게 전달됩니다.
+  };
+
+  const response = await api.post<ApiResponse<any>>(`/posts/${postId}/comments`, finalBody);
   return response.data.result;
 };
-
-// 🌟 1.8 댓글 목록 조회 API 연동 (반환 제네릭 타입 명시적 교정)
-export const getComments = async (postId: string) => {
-  const response = await api.get<ApiResponse<CommentResponse[]>>(`/posts/${postId}/comments`);
-  return response.data.result;
-};
-
