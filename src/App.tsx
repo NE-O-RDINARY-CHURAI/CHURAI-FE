@@ -22,7 +22,7 @@ function App() {
           <h1 className="mt-1 text-2xl font-bold text-black">공통 UI 컴포넌트 최종 검증</h1>
         </header>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8">
           {/* 왼쪽 영역: 기존 컨트롤 테스트 (SelectBox, Tag, Button) */}
           <div className="space-y-6 md:col-span-1">
             <section className="bg-gray1 space-y-2 rounded-2xl p-4">
@@ -72,7 +72,7 @@ function App() {
             </h2>
 
             {/* 카드를 이쁘게 가로로 배치하기 위해 flex 랩핑 */}
-            <div className="flex flex-wrap justify-start gap-6 p-2">
+            <div className="flex flex-col justify-start gap-6 p-2">
               {/* 1등 카드: 1st-badge.svg 확인 */}
               <SquareCard
                 rank={1}
