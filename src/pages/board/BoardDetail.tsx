@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-// 🌟 TypeScript 컴파일 오류 방지를 위해 'type' 키워드를 명시하여 안전하게 가져옵니다!
 import { getPostDetail } from '../../apis/board/boardApi';
 import type { PostDetailResponse } from '../../apis/board/boardApi';
 
