@@ -10,6 +10,7 @@ interface PostCardProps {
   commentCount: number
   likeCount: number
   viewCount: number
+  onClick?: () => void
 }
 
 const PostCard = ({
@@ -20,9 +21,14 @@ const PostCard = ({
   commentCount,
   likeCount,
   viewCount,
+  onClick,
 }: PostCardProps) => {
   return (
-    <article className="flex h-[94px] w-full items-center gap-3 rounded-medium4 bg-white p-3">
+    <article
+      className="flex h-[94px] w-full items-center gap-3 rounded-medium4 bg-white p-3"
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
+    >
       <div className="h-[70px] w-[70px] shrink-0 overflow-hidden rounded-small1 bg-gray1">
         {imageUrl && <img src={imageUrl} alt={title} className="h-full w-full object-cover" />}
       </div>
