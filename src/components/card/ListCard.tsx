@@ -37,14 +37,14 @@ const PostCard = ({
 
   return (
     <article
-      className="rounded-medium4 flex h-23.5 w-full cursor-pointer items-center gap-3 bg-white p-3"
+      className="rounded-medium4 relative flex h-23.5 w-full cursor-pointer items-center gap-3 bg-white p-3"
       onClick={onClick}
     >
       <div className="rounded-small bg-gray1 h-17.5 w-17.5 shrink-0 overflow-hidden">
         {imageUrl && <img src={imageUrl} alt={title} className="h-full w-full object-cover" />}
       </div>
       {rank && BADGE[rank] && (
-        <img src={BADGE[rank]} alt={`${rank}등`} className="absolute -top-2 -left-2" />
+        <img src={BADGE[rank]} alt={`${rank}등`} className="absolute top-2 right-2" />
       )}
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
