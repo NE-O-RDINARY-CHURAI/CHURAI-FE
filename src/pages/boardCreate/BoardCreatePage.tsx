@@ -17,8 +17,10 @@ export default function BoardCreate() {
   const [contents, setContents] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
-  const [category, setCategory] = useState<'MEAL' | 'DESSERT' | ''>('');
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [category, setCategory] = useState<'MAIN_DISH' | 'DESSERT' | ''>('');
+  // 백엔드로 전송할 실제 바이너리 File 객체 배열
+  const [images, setImages] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]); // 프리뷰용 가상 URL 배열
 
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -26,49 +28,39 @@ export default function BoardCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 뒤로가기 확인
-  const handleBackNavigation = (
-  e: React.MouseEvent<HTMLButtonElement>
-) => {
-  e.preventDefault();
-  e.stopPropagation();
+  const handleBackNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  const isConfirmed = window.confirm(
-    '정말 뒤로 가시겠습니까?'
-  );
+    const isConfirmed = window.confirm('정말 뒤로 가시겠습니까?');
+    if (isConfirmed) {
+      navigate(-1);
+    }
+  };
 
-  if (isConfirmed) {
-    navigate(-1);
-  }
-};
-
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    if (imageUrls.length + files.length > 10) {
-      alert('이미지는 최대 10장까지만 업로드할 수 있습니다.');
+    if (images.length + files.length > 3) {
+      alert('이미지는 최대 3장까지만 업로드할 수 있습니다.');
       return;
     }
 
-    const localBlobUrls = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
-    );
+    const fileArray = Array.from(files);
 
-    setImageUrls([...imageUrls, ...localBlobUrls]);
+    const blobUrls = fileArray.map((file) => URL.createObjectURL(file));
+    setPreviewUrls([...previewUrls, ...blobUrls]);
+    setImages([...images, ...fileArray]);
+    
   };
 
   const handleImageDelete = (indexToRemove: number) => {
-    setImageUrls(
-      imageUrls.filter((_, index) => index !== indexToRemove)
-    );
+    setImages(images.filter((_, index) => index !== indexToRemove));
+    setPreviewUrls
   };
 
-  const handleTagKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim()) {
       e.preventDefault();
 
@@ -105,13 +97,12 @@ export default function BoardCreate() {
         nickname,
         password,
         category,
-        imageUrls,
+        images, 
         tags,
       });
 
-      alert('게시글 작성이 완료되었습니다! 🚀');
-
-      navigate(`/boardDetail/${data.postId}`);
+      alert('게시글 작성이 완료되었습니다!');
+      navigate(`/boardDetail/${data.id}`);
     } catch (error) {
       console.error(error);
       alert('게시글 작성에 실패했습니다.');
@@ -137,29 +128,15 @@ export default function BoardCreate() {
             className="w-6 h-6 flex items-center justify-center text-white absolute right-[28px] hover:opacity-80 transition-opacity"
             aria-label="닫기"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </header>
 
         <div className="p-6 flex flex-col gap-5 bg-white">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              레시피명*
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">레시피명*</label>
             <input
               type="text"
               placeholder="레시피명을 입력해주세요"
@@ -170,52 +147,34 @@ export default function BoardCreate() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              카테고리*
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">카테고리*</label>
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => setCategory('MEAL')}
+                onClick={() => setCategory('MAIN_DISH')}
                 className={`flex-1 h-9 rounded-full border text-xs flex items-center justify-center gap-1.5 transition-colors text-[#000000] ${
-                  category === 'MEAL'
-                    ? 'border-[#FD4A12] bg-[#FD4A12]/10 font-black'
-                    : 'border-gray-200 bg-white font-semibold'
+                  category === 'MAIN_DISH' ? 'border-[#FD4A12] bg-[#FD4A12]/10 font-black' : 'border-gray-200 bg-white font-semibold'
                 }`}
               >
-                <img
-                  src={BowlIcon}
-                  alt="식사"
-                  className="w-4 h-4"
-                />
-                <span>식사</span>
+                <img src={BowlIcon} alt="주요 요리" className="w-4 h-4" />
+                <span>주요 요리</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setCategory('DESSERT')}
                 className={`flex-1 h-9 rounded-full border text-xs flex items-center justify-center gap-1.5 transition-colors text-[#000000] ${
-                  category === 'DESSERT'
-                    ? 'border-[#FD4A12] bg-[#FD4A12]/10 font-black'
-                    : 'border-gray-200 bg-white font-semibold'
+                  category === 'DESSERT' ? 'border-[#FD4A12] bg-[#FD4A12]/10 font-black' : 'border-gray-200 bg-white font-semibold'
                 }`}
               >
-                <img
-                  src={SnackIcon}
-                  alt="디저트"
-                  className="w-4 h-4"
-                />
+                <img src={SnackIcon} alt="디저트" className="w-4 h-4" />
                 <span>디저트</span>
               </button>
             </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              레시피 설명*
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">레시피 설명*</label>
             <textarea
               rows={5}
               placeholder={`Ex. 자유롭게 레시피를 작성해주세요!\n재료: 양파 1개, 고춧가루 50g\n만드는 방법:\n1.\n2.\n3.`}
@@ -232,11 +191,7 @@ export default function BoardCreate() {
                 onClick={() => fileInputRef.current?.click()}
                 className="w-full h-10 border border-gray-200 rounded-xl flex items-center justify-center gap-2 text-xs text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors"
               >
-                <img
-                  src={ImageIcon}
-                  alt="사진"
-                  className="w-4 h-4"
-                />
+                <img src={ImageIcon} alt="사진" className="w-4 h-4" />
                 <span>사진 업로드</span>
               </button>
 
@@ -249,17 +204,9 @@ export default function BoardCreate() {
                 className="hidden"
               />
 
-              {imageUrls.map((url, index) => (
-                <div
-                  key={index}
-                  className="relative w-14 h-14 border border-gray-200 rounded-lg overflow-hidden group mt-1"
-                >
-                  <img
-                    src={url}
-                    alt="미리보기"
-                    className="w-full h-full object-cover"
-                  />
-
+              {previewUrls.map((url, index) => (
+                <div key={index} className="relative w-14 h-14 border border-gray-200 rounded-lg overflow-hidden group mt-1">
+                  <img src={url} alt="미리보기" className="w-full h-full object-cover" />
                   <button
                     type="button"
                     onClick={() => handleImageDelete(index)}
@@ -273,10 +220,7 @@ export default function BoardCreate() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              닉네임
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">닉네임</label>
             <input
               type="text"
               placeholder="닉네임을 작성해주세요"
@@ -287,10 +231,7 @@ export default function BoardCreate() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              비밀번호*
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">비밀번호*</label>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요"
@@ -301,10 +242,7 @@ export default function BoardCreate() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-gray-700">
-              태그 설정
-            </label>
-
+            <label className="text-xs font-bold text-gray-700">태그 설정</label>
             <input
               type="text"
               placeholder="태그를 입력하고 Enter"
@@ -313,15 +251,10 @@ export default function BoardCreate() {
               onKeyDown={handleTagKeyDown}
               className="w-full h-11 px-4 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#FD4A12] placeholder:text-gray-300 transition-colors"
             />
-
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-1">
                 {tags.map((tag) => (
-                  <Tag
-                    key={tag}
-                    variant="default"
-                    onDelete={() => handleTagDelete(tag)}
-                  >
+                  <Tag key={tag} variant="default" onDelete={() => handleTagDelete(tag)}>
                     {tag}
                   </Tag>
                 ))}
@@ -344,9 +277,7 @@ export default function BoardCreate() {
               variant="primary"
               isActive={isFormValid && !isSubmitting}
               className={`flex-1 h-10 text-xs font-black transition-colors text-[#000000] ${
-                isFormValid
-                  ? 'bg-[#FD4A12]'
-                  : 'bg-gray-200'
+                isFormValid ? 'bg-[#FD4A12]' : 'bg-gray-200'
               }`}
             >
               {isSubmitting ? '등록 중...' : '작성 완료'}
