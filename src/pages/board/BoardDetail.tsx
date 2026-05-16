@@ -33,7 +33,7 @@ export default function BoardDetail() {
         const data = await getPostDetail(id);
         setBoardData(data);
         // 백엔드에서 내려주는 진짜 chuRaiCount(또는 heungMiCount)를 초기 좋아요 수로 세팅
-        setLikeCount(data.chuRaiCount || 0); 
+        setLikeCount(data.churaiCount || 0);
       } catch (error) {
         console.error('게시글 상세 조회 실패:', error);
         alert('존재하지 않거나 삭제된 레시피 게시글입니다.');
@@ -90,7 +90,7 @@ export default function BoardDetail() {
             <div className="flex items-center gap-3 text-xs">
               <span className="flex items-center gap-1" title="흥미요 카운트">
                 <EyeIcon className="w-4 h-4"/>
-                {boardData.heungMiCount || 0}
+                {boardData.interestedCount || 0}
               </span>
               <span className="flex items-center gap-1" title="공유 스택">
                 <ForkIcon className="w-4 h-4"/>
