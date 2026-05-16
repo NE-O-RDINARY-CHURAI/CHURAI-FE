@@ -1,6 +1,6 @@
-import commentIcon from '../../assets/icons/card-comment.svg'
-import likeIcon from '../../assets/icons/card-like.svg'
-import lookIcon from '../../assets/icons/card-look.svg'
+import ForkIcon from '../../assets/icons/fork.svg?react'
+import LikeIcon from '../../assets/icons/good.svg?react'
+import LookIcon from '../../assets/icons/eye.svg?react'
 
 interface PostCardProps {
   imageUrl?: string
@@ -42,19 +42,19 @@ const PostCard = ({
         <h3 className="caption1-semibold line-clamp-1 text-black">{title}</h3>
 
         <div className="flex items-center gap-2">
-          <div className="text-main flex items-center gap-1">
-            <img src={commentIcon} alt="" className="h-[4.5 w-4.5" />
-            <span className="caption1-semibold">{commentCount}</span>
+          <div className="text-gray2 flex items-center">
+            <ForkIcon className="h-4 w-4" />
+            <span className="caption2-medium">{commentCount}</span>
           </div>
 
-          <div className="text-gray2 flex items-center gap-1">
-            <img src={likeIcon} alt="" className="h-4.5 w-4.5" />
-            <span className="caption1-semibold">{likeCount}</span>
+          <div className="text-gray2 flex items-center">
+            <LikeIcon className="h-4 w-4" />
+            <span className="caption2-medium">{likeCount}</span>
           </div>
 
-          <div className="text-gray2 flex items-center gap-1">
-            <img src={lookIcon} alt="" className="h-4.5 w-4.5" />
-            <span className="caption1-semibold">{viewCount}</span>
+          <div className="text-gray2 flex items-center">
+            <LookIcon className="h-4 w-4" />
+            <span className="caption2-medium">{viewCount}</span>
           </div>
         </div>
       </div>
