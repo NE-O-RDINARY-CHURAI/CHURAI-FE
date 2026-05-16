@@ -1,7 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
 import HomeLayout from '../layout/HomeLayout'
 import DefaultLayout from '../layout/DefaultLayout'
+import HomePage from '../pages/home/HomePage'
+import BoardPage from '../pages/board/BoardPage'
+import SearchPage from '../pages/search/SearchPage'
+import BoardDetailPage from '../pages/boardDetail/BoardDetailPage'
+import BoardCreatePage from '../pages/boardCreate/BoardCreatePage'
+import BoardEditPage from '../pages/boardEdit/BoardEditPage'
 
 export const router = createBrowserRouter([
   {
@@ -9,7 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <App />, // Home 자리
+        element: <HomePage />,
       },
     ],
   },
@@ -18,23 +23,23 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/board',
-        element: <></>, // Board 자리
+        element: <BoardPage />,
       },
       {
         path: '/search',
-        element: <></>, // Search 자리
+        element: <SearchPage />,
       },
       {
         path: '/boardDetail/:id',
-        element: <></>, // BoardDetail 자리
+        element: <BoardDetailPage />,
       },
       {
         path: '/boardCreate',
-        element: <></>, // BoardCreate 자리
+        element: <BoardCreatePage />,
       },
       {
         path: '/boardEdit/:id',
-        element: <></>, // BoardEdit 자리
+        element: <BoardEditPage />,
       },
     ],
   },
