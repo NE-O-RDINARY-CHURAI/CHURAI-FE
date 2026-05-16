@@ -130,7 +130,7 @@ export default function BoardPage() {
       <header className="bg-main relative flex h-14 shrink-0 items-center justify-center px-7">
         <button
           type="button"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
           className="absolute left-7 flex h-6 w-6 shrink-0 items-center justify-center"
           aria-label="뒤로가기"
         >
