@@ -88,6 +88,7 @@ export default function HomePage() {
               commentCount={item.commentCount}
               likeCount={item.interestedCount}
               viewCount={item.views}
+              onClick={() => navigate(`/boardDetail/${item.id}`)}
             />
           ))}
         </div>
