@@ -7,14 +7,15 @@ export default function SearchPage() {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('')
   const [posts, setPosts] = useState<Post[]>([])
-  const [searched, setSearched] = useState(false)
+  const [searched, setSearched] = useState(false) // 검색 실행 여부 (결과 없음 메시지 조건)
   const [page, setPage] = useState(0)
-  const [hasNext, setHasNext] = useState(false)
+  const [hasNext, setHasNext] = useState(false) // 다음 페이지 존재 여부
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
-  const currentKeyword = useRef('')
+  const currentKeyword = useRef('') // 무한스크롤 시 현재 검색어 유지용
 
+  // reset=true면 새 검색, false면 다음 페이지 이어붙이기
   const fetchPosts = useCallback(async (kw: string, pageNum: number, reset: boolean) => {
     setLoading(true)
     setError(false)
@@ -39,6 +40,7 @@ export default function SearchPage() {
     fetchPosts(trimmed, 0, true)
   }
 
+  // 마지막 카드가 화면에 보이면 다음 페이지 자동 로드 (무한스크롤)
   const lastCardRef = useCallback(
     (node: HTMLElement | null) => {
       if (observerRef.current) observerRef.current.disconnect()
@@ -52,6 +54,7 @@ export default function SearchPage() {
     [hasNext, loading, page, fetchPosts],
   )
 
+  // 페이지 언마운트 시 옵저버 정리
   useEffect(() => {
     return () => observerRef.current?.disconnect()
   }, [])
@@ -80,6 +83,7 @@ export default function SearchPage() {
             className="caption1-medium flex-1 bg-transparent text-black outline-none placeholder:text-gray2"
             autoFocus
           />
+          {/* 주황 돋보기 = 검색 실행 버튼 */}
           <button
             type="button"
             onClick={handleSearch}
@@ -102,6 +106,7 @@ export default function SearchPage() {
         )}
         <div className="flex flex-col gap-2">
           {posts.map((post, i) => (
+            // 마지막 카드에만 ref 부착해서 무한스크롤 감지
             <div
               key={post.postId}
               ref={i === posts.length - 1 ? lastCardRef : null}
