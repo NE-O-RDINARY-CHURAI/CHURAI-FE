@@ -123,7 +123,7 @@ export default function SearchPage() {
           <p className="caption1-medium mt-10 text-center text-gray3">검색 결과가 없습니다</p>
         )}
 
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col gap-2 transition-opacity duration-200 ${loading ? 'pointer-events-none opacity-40' : 'opacity-100'}`}>
           {visiblePosts.map((post, i) => {
             const isLast = i === visiblePosts.length - 1
             return (
@@ -142,9 +142,6 @@ export default function SearchPage() {
           })}
         </div>
 
-        {loading && (
-          <p className="caption1-medium mt-4 text-center text-gray3">불러오는 중...</p>
-        )}
         {!loading && hasMore && (
           <p className="caption1-medium mt-4 text-center text-gray3">스크롤하면 더 불러옵니다</p>
         )}
