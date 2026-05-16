@@ -3,6 +3,7 @@ import Button from './components/button/Button'
 import Tag from './components/tag/Tag'
 import SelectBox from './components/selectbox/SelectBox'
 import Dropdown from './components/dropdown/Dropdown'
+import SquareCard from './components/card/SquareCard'
 
 function App() {
   const [category, setCategory] = useState<'MEAL' | 'DESSERT' | ''>('')
@@ -16,51 +17,95 @@ function App() {
   return (
     <div className="bg-slate-100 px-4 py-6">
       <main className="">
-        <header className="mb-6">
-          <p className="text-sm font-semibold text-orange-500">Taste Pioneers UI KIT</p>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900">재범 파트 최종 확인 화면</h1>
+        <header className="mb-8 border-b border-slate-100 pb-4">
+          <p className="text-main text-sm font-semibold">Taste Pioneers UI KIT</p>
+          <h1 className="mt-1 text-2xl font-bold text-black">공통 UI 컴포넌트 최종 검증</h1>
         </header>
 
-        <div className="flex-1 space-y-6">
-          {/* 1. 카테고리 설정 셀렉트 박스 구역 */}
-          <section className="space-y-2 rounded-2xl bg-slate-50 p-4">
-            <h2 className="text-xs font-bold tracking-wider text-slate-400 uppercase">
-              SelectBox Test
-            </h2>
-            <SelectBox label="카테고리 설정" value={category} onChange={val => setCategory(val)} />
-          </section>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {/* 왼쪽 영역: 기존 컨트롤 테스트 (SelectBox, Tag, Button) */}
+          <div className="space-y-6 md:col-span-1">
+            <section className="bg-gray1 space-y-2 rounded-2xl p-4">
+              <h2 className="caption2-medium text-gray3 tracking-wider uppercase">
+                SelectBox Test
+              </h2>
+              <SelectBox
+                label="카테고리 설정"
+                value={category}
+                onChange={val => setCategory(val)}
+              />
+            </section>
 
-          {/* 2. 태그 컴포넌트 구역 */}
-          <section className="space-y-3 rounded-2xl bg-slate-50 p-4">
-            <h2 className="text-xs font-bold tracking-wider text-slate-400 uppercase">Tag Test</h2>
-            <div className="flex flex-wrap gap-2">
-              {tags.map(tag => (
-                <Tag key={tag} variant="default" onDelete={() => handleTagDelete(tag)}>
-                  {tag}
-                </Tag>
-              ))}
-            </div>
-          </section>
+            <section className="bg-gray1 space-y-3 rounded-2xl p-4">
+              <h2 className="caption2-medium text-gray3 tracking-wider uppercase">Tag Test</h2>
+              <div className="flex flex-wrap gap-2">
+                {tags.map(tag => (
+                  <Tag key={tag} variant="default" onDelete={() => handleTagDelete(tag)}>
+                    {tag}
+                  </Tag>
+                ))}
+              </div>
+            </section>
 
-          {/* 3. 버튼 마우스 호버 반응 확인 구역 */}
-          <section className="space-y-3 rounded-2xl bg-slate-50 p-4">
-            <h2 className="text-xs font-bold tracking-wider text-slate-400 uppercase">
-              Button Hover Test
+            <section className="bg-gray1 space-y-3 rounded-2xl p-4">
+              <h2 className="caption2-medium text-gray3 tracking-wider uppercase">
+                Button Hover Test
+              </h2>
+              <Button variant="primary" width="full">
+                레시피 개척하기
+              </Button>
+              <div className="flex space-x-2">
+                <Button variant="secondary" className="flex-1">
+                  인정해요 👍
+                </Button>
+                <Button variant="tertiary" className="flex-1">
+                  뒤로가기
+                </Button>
+              </div>
+            </section>
+          </div>
+
+          {/* 오른쪽 영역: 🌟 새롭게 구현한 SquareCard 검증 구역 (2컬럼 차지) */}
+          <div className="space-y-4 md:col-span-2">
+            <h2 className="caption2-medium text-gray3 px-2 tracking-wider uppercase">
+              SquareCard Test (왕관 & 말줄임 검증)
             </h2>
-            <Button variant="primary" width="full">
-              레시피 개척하기
-            </Button>
-            <div className="flex space-x-2">
-              <Button variant="secondary" className="flex-1">
-                인정해요 👍
-              </Button>
-              <Button variant="tertiary" className="flex-1">
-                뒤로가기
-              </Button>
+
+            {/* 카드를 이쁘게 가로로 배치하기 위해 flex 랩핑 */}
+            <div className="flex flex-wrap justify-start gap-6 p-2">
+              {/* 1등 카드: 1st-badge.svg 확인 */}
+              <SquareCard
+                rank={1}
+                title="매콤달콤 특제 떡볶이"
+                likes={124}
+                views={1420}
+                shares={45}
+                onClick={() => alert('1등 레시피 클릭!')}
+              />
+
+              {/* 2등 카드: 2nd-badge.svg 확인 */}
+              <SquareCard
+                rank={2}
+                title="초코 가득 퐁당 쇼콜라"
+                likes={98}
+                views={890}
+                shares={22}
+              />
+
+              {/* 3등 카드 & 말줄임 테스트: 제목이 억수로 길 때 ...으로 잘 잘리는지 확인 */}
+              <SquareCard
+                rank={3}
+                title="우주에서 제일 맛있는 대존맛 안먹으면 후회하는 마라 로제 파스타 꿀조합 레시피"
+                likes={56}
+                views={412}
+                shares={12}
+              />
+
+              {/* 일반 카드: 왕관이 아예 없을 때 레이아웃 무너지지 않는지 확인 */}
+              <SquareCard title="시원한 아이스 아메리카노" likes={12} views={98} shares={3} />
             </div>
-          </section>
+          </div>
         </div>
-
         <section className="flex justify-end">
           <Dropdown options={['전체', '인기순', '최신순']} value={sort} onChange={setSort} />
         </section>
