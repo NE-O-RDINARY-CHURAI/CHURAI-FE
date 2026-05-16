@@ -44,7 +44,7 @@ export default function SquareCard({
         <img
           src={rankBadges[rank]}
           alt={`${rank}등 뱃지`}
-          className="pointer-events-none absolute -top-3 left-1/2 z-20 h-9.25 w-10.5 -translate-x-1/2 object-contain drop-shadow-sm"
+          className="pointer-events-none absolute -top-7 left-1/2 z-20 h-12 w-12 -translate-x-1/2 object-contain drop-shadow-sm"
         />
       )}
 
@@ -64,7 +64,10 @@ export default function SquareCard({
         <div className="caption1-regular text-gray2 flex items-center gap-2">
           <button
             className={`flex items-center gap-0.5 transition-colors duration-200 ${churaid ? 'text-main' : 'text-gray2'}`}
-            onClick={e => { e.stopPropagation(); toggleChurai() }}
+            onClick={e => {
+              e.stopPropagation()
+              toggleChurai()
+            }}
           >
             <ForkIcon className="h-4 w-4" />
             <span>{shares + (churaid ? 1 : 0)}</span>
@@ -72,7 +75,10 @@ export default function SquareCard({
 
           <button
             className={`flex items-center gap-0.5 font-medium transition-colors duration-200 ${interested ? 'text-main' : 'text-gray2'}`}
-            onClick={e => { e.stopPropagation(); toggleInterested() }}
+            onClick={e => {
+              e.stopPropagation()
+              toggleInterested()
+            }}
           >
             <GoodIcon className="h-4 w-4" />
             <span>{likes + (interested ? 1 : 0)}</span>
