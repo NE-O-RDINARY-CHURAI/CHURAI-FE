@@ -163,15 +163,15 @@ export default function BoardDetailPage() {
   const rootComments = commentsList;
 
   return (
-    <div className="min-h-screen bg-slate-100 py-10 flex justify-center items-start">
-      <div className="w-[360px] bg-white shadow-md overflow-hidden flex flex-col rounded-2xl pb-6">
+    <div className="flex min-h-dvh flex-col bg-white">
+      <div className="flex w-full flex-1 flex-col">
 
         {/* 🛠️ [교정 완료] 헤더의 배경색을 진한 회색(bg-gray-100)으로 시원하게 톤업 완료! */}
-        <header className="w-full px-[28px] py-[20px] bg-gray-100 flex items-center relative select-none">
+        <header className="bg-main relative flex h-14 shrink-0 items-center justify-center px-7">
           <button
             type="button"
             onClick={handleBackNavigation}
-            className="flex items-center justify-center hover:opacity-70 transition-opacity"
+            className="absolute left-7 flex items-center justify-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
